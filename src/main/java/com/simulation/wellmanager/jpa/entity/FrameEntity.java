@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -24,11 +26,12 @@ public class FrameEntity {
 
     @Id
     @Type(type = "uuid-char")
-    @Column(name = "ID_FRAME")
+    @Column(name = "ID_FRAME", columnDefinition = "char(36)")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
 
     @Type(type = "uuid-char")
-    @Column(name = "ID_WELL", nullable = false)
+    @Column(name = "ID_WELL", columnDefinition = "char(36)", nullable = false)
     private UUID wellId;
 
     @Column(name = "VOLTAGE", nullable = false)
@@ -44,7 +47,7 @@ public class FrameEntity {
     private Double frequency;
 
     @Column(name = "PRESSURE", nullable = false)
-    private Double pumpPressure;
+    private Double pressure;
 
     @Column(name = "TEMPERATURE", nullable = false)
     private Double temperature;
