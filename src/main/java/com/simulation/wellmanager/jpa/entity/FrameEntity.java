@@ -37,7 +37,7 @@ public class FrameEntity {
     @Column(name = "VOLTAGE", nullable = false)
     private Double voltage;
 
-    @Column(name = "CURRENT", nullable = false)
+    @Column(name = "ELECTRIC_CURRENT", nullable = false)
     private Double current;
 
     @Column(name = "SPEED", nullable = false)

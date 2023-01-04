@@ -49,5 +49,14 @@ services:
 
   redis:
     image: redis
+    container_name: redis
     ports:
       - "6379:6379"
+
+  db:
+    image: postgres:alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: frame
