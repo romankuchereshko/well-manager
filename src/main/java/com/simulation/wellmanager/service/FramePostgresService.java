@@ -1,6 +1,7 @@
 package com.simulation.wellmanager.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
@@ -14,19 +15,21 @@ import oil.station.domain.frame.Frame;
 @AllArgsConstructor
 @Slf4j
 @Component
-public class FrameService {
+public class FramePostgresService {
 
     private final FrameRepository frameRepository;
 
     private final FrameEntityMapper frameEntityMapper;
 
-    public void saveFrames(final List<Frame> frames) {
-        log.info("Frames with critical values are going to be saved into DB");
+    public void saveAll(final List<Frame> frames) {
+        final List<UUID> uuids = frames.stream().map(Frame::getId).toList();
+
+        log.info("Frames [{}] with critical values are going to be saved into postgres DB", uuids);
         final List<FrameEntity> frameEntities = this.frameRepository.saveAll(frames.stream()
             .map(this.frameEntityMapper::toEntity)
             .toList());
 
-        log.info("Frames [{}] were successfully saved into DB",
+        log.info("Frames [{}] were successfully saved into postgres DB",
             frameEntities.stream().map(FrameEntity::getId).toList());
     }
 

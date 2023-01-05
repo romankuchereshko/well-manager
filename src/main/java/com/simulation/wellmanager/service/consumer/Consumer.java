@@ -8,7 +8,8 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.simulation.wellmanager.service.FrameService;
+import com.simulation.wellmanager.service.FramePostgresService;
+import com.simulation.wellmanager.service.FrameRedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import oil.station.domain.frame.Frame;
@@ -20,7 +21,9 @@ public class Consumer {
 
     private final ObjectMapper objectMapper;
 
-    private final FrameService frameService;
+    private final FramePostgresService framePostgresService;
+
+    private final FrameRedisService frameRedisService;
 
     @KafkaListener(topics = "${topic.name}")
     public void consumeMessage(final String message) throws JsonProcessingException {
@@ -28,7 +31,8 @@ public class Consumer {
 
         final List<Frame> frames = Arrays.asList(this.objectMapper.readValue(message, Frame[].class));
 
-        this.frameService.saveFrames(frames);
+        this.framePostgresService.saveAll(frames);
+        this.frameRedisService.saveAll(frames);
     }
 
 }

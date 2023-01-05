@@ -4,12 +4,14 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.simulation.wellmanager.util.UUIDConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,14 +27,14 @@ import org.hibernate.annotations.Type;
 public class FrameEntity {
 
     @Id
-    @Type(type = "uuid-char")
-    @Column(name = "ID_FRAME", columnDefinition = "char(36)")
+//    @Type(type="org.hibernate.type.UUIDCharType")
+    @Convert(converter = UUIDConverter.class)
+    @Column(name = "ID_FRAME")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
 
-    @Type(type = "uuid-char")
-    @Column(name = "ID_WELL", columnDefinition = "char(36)", nullable = false)
-    private UUID wellId;
+    @Column(name = "ID_WELL", nullable = false)
+    private Long wellId;
 
     @Column(name = "VOLTAGE", nullable = false)
     private Double voltage;

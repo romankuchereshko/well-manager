@@ -21,7 +21,7 @@ public class FrameRedisEntity implements Serializable {
     @Id
     private UUID id;
 
-    private UUID wellId;
+    private Long wellId;
 
     private Double voltage;
 

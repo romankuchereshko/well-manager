@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS frame (
     id_frame uuid primary key not null,
-    id_well uuid not null,
+    id_well bigint not null,
     voltage double precision not null,
     electric_current double precision not null,
     speed double precision not null,
