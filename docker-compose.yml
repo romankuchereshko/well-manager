@@ -31,6 +31,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_DELETE_TOPIC_ENABLE: "true"
     depends_on:
       - zookeeper
 
@@ -55,8 +56,11 @@ services:
 
   db:
     image: postgres:alpine
+    container_name: db
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_PASSWORD: password
       POSTGRES_DB: frame
+      POSTGRES_PASSWORD: password
+    volumes:
+      - "./init.sql:/docker-entrypoint-initdb.d/init.sql"

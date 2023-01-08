@@ -10,9 +10,6 @@ spring:
     url: jdbc:postgresql://localhost:5432/frame
     username: postgres
     password: password
-  sql:
-    init:
-      mode: always
 
 topic:
   name: frames

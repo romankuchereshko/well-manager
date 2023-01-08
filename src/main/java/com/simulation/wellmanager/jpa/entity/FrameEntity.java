@@ -6,8 +6,6 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -16,7 +14,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 
 @Data
 @Builder(toBuilder = true)
@@ -27,10 +24,8 @@ import org.hibernate.annotations.Type;
 public class FrameEntity {
 
     @Id
-//    @Type(type="org.hibernate.type.UUIDCharType")
     @Convert(converter = UUIDConverter.class)
     @Column(name = "ID_FRAME")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
 
     @Column(name = "ID_WELL", nullable = false)

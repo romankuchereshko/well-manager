@@ -6,9 +6,6 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
-
-import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -25,17 +22,10 @@ public class FrameRedisRepository {
 
     private final RedisTemplate<String, FrameRedisEntity> redisTemplate;
 
-    private HashOperations<String, UUID, FrameRedisEntity> hashOperations;
-
-    @PostConstruct
-    private void init() {
-        this.hashOperations = this.redisTemplate.opsForHash();
-    }
-
     public FrameRedisEntity save(final FrameRedisEntity frame) {
         log.debug("Start saving frame with uuid = [{}] to redis DB", frame.getId());
 
-        this.hashOperations.put(HASH_KEY, frame.getId(), frame);
+        this.redisTemplate.opsForHash().put(HASH_KEY, frame.getId(), frame);
 
         log.debug("Frame with uuid = [{}] was successfully saved to redis DB", frame.getId());
 
@@ -49,7 +39,7 @@ public class FrameRedisRepository {
 
         final Map<UUID, FrameRedisEntity> uuidFrameMap = frame.stream()
             .collect(Collectors.toMap(FrameRedisEntity::getId, Function.identity()));
-        this.hashOperations.putAll(HASH_KEY, uuidFrameMap);
+        this.redisTemplate.opsForHash().putAll(HASH_KEY, uuidFrameMap);
 
         log.debug("Frames with uuids = [{}] were successfully saved to redis DB", uuids);
 
@@ -60,30 +50,32 @@ public class FrameRedisRepository {
 
         log.debug("Start fetching all frames from redis DB");
 
-        final List<FrameRedisEntity> frameRedisEntities = this.hashOperations.values(HASH_KEY);
+        final List<FrameRedisEntity> frames = this.redisTemplate.opsForHash().values(HASH_KEY)
+            .stream().map(FrameRedisEntity.class::cast)
+            .toList();
 
         log.debug("Frames with uuids = [{}] were successfully fetched from redis DB",
-            frameRedisEntities.stream().map(FrameRedisEntity::getId).toList());
+            frames.stream().map(FrameRedisEntity::getId).toList());
 
-        return frameRedisEntities;
+        return frames;
     }
 
     public FrameRedisEntity findById(final UUID frameId) {
 
         log.debug("Start fetching frame by uuid = [{}] from redis DB", frameId);
 
-        FrameRedisEntity frameRedisEntity = this.hashOperations.get(HASH_KEY, frameId);
+        FrameRedisEntity frameRedisEntity = (FrameRedisEntity) this.redisTemplate.opsForHash().get(HASH_KEY, frameId);
 
         log.debug("Frame was successfully fetched by uuid = [{}] from redis DB", frameId);
 
         return frameRedisEntity;
     }
 
-    public Long deleteProduct(final UUID frameId) {
+    public Long deleteFrame(final UUID frameId) {
 
         log.debug("Start deleting frame by uuid = [{}] from redis DB", frameId);
 
-        final Long delete = this.hashOperations.delete(HASH_KEY, frameId);
+        final Long delete = this.redisTemplate.opsForHash().delete(HASH_KEY, frameId);
 
         log.debug("Frame by uuid = [{}] was successfully deleted from redis DB", frameId);
 

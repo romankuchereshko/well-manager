@@ -2,6 +2,7 @@ package com.simulation.wellmanager.service.consumer;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -31,8 +32,10 @@ public class Consumer {
 
         final List<Frame> frames = Arrays.asList(this.objectMapper.readValue(message, Frame[].class));
 
-        this.framePostgresService.saveAll(frames);
-        this.frameRedisService.saveAll(frames);
+        CompletableFuture.allOf(
+            CompletableFuture.runAsync(() -> this.frameRedisService.saveAll(frames)),
+            CompletableFuture.runAsync(() -> this.framePostgresService.saveAll(frames))
+        ).join();
     }
 
 }
