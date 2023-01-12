@@ -2,15 +2,13 @@ package com.simulation.wellmanager.service.consumer;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.simulation.wellmanager.service.FramePostgresService;
-import com.simulation.wellmanager.service.FrameRedisService;
+import com.simulation.wellmanager.service.FrameService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import oil.station.domain.frame.Frame;
@@ -22,9 +20,8 @@ public class Consumer {
 
     private final ObjectMapper objectMapper;
 
-    private final FramePostgresService framePostgresService;
+    private final FrameService frameService;
 
-    private final FrameRedisService frameRedisService;
 
     @KafkaListener(topics = "${topic.name}")
     public void consumeMessage(final String message) throws JsonProcessingException {
@@ -32,10 +29,7 @@ public class Consumer {
 
         final List<Frame> frames = Arrays.asList(this.objectMapper.readValue(message, Frame[].class));
 
-        CompletableFuture.allOf(
-            CompletableFuture.runAsync(() -> this.frameRedisService.saveAll(frames)),
-            CompletableFuture.runAsync(() -> this.framePostgresService.saveAll(frames))
-        ).join();
+        this.frameService.saveAll(frames);
     }
 
 }

@@ -1,12 +1,16 @@
 package com.simulation.wellmanager.jpa.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import com.simulation.wellmanager.util.UUIDConverter;
@@ -21,7 +25,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "FRAME")
-public class FrameEntity {
+public class FrameEntity implements Serializable {
 
     @Id
     @Convert(converter = UUIDConverter.class)
@@ -52,7 +56,26 @@ public class FrameEntity {
     @Column(name = "LIQUID_FLOW_RATE", nullable = false)
     private Double liquidFlowRate;
 
-    @Column(name = "CREATION_DATE_TIME", nullable = false)
-    private LocalDateTime creationDateTime;
+    @Column(name = "CREATION_DATE_TIME", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "UPDATING_DATE_TIME", nullable = false)
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void prePersist() {
+        final LocalDateTime currentDateTime = LocalDateTime.now();
+        if (Objects.isNull(this.createdAt)) {
+            this.createdAt = currentDateTime;
+        }
+        this.updatedAt = currentDateTime;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        if (Objects.isNull(this.updatedAt)) {
+            this.updatedAt = LocalDateTime.now();
+        }
+    }
 
 }

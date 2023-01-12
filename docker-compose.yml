@@ -48,11 +48,14 @@ services:
     depends_on:
       - "kafka"
 
-  redis:
+  cache:
     image: redis
     container_name: redis
     ports:
       - "6379:6379"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
 
   db:
     image: postgres:alpine
