@@ -3,34 +3,36 @@ package com.simulation.wellmanager.jpa.entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.UUID;
 
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
-import com.simulation.wellmanager.util.UUIDConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 @Entity
 @Table(name = "FRAME")
 public class FrameEntity implements Serializable {
 
     @Id
-    @Convert(converter = UUIDConverter.class)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_FRAME")
-    private UUID id;
+    private Long id;
 
     @Column(name = "ID_WELL", nullable = false)
     private Long wellId;
@@ -56,9 +58,11 @@ public class FrameEntity implements Serializable {
     @Column(name = "LIQUID_FLOW_RATE", nullable = false)
     private Double liquidFlowRate;
 
+    @Accessors(chain = true)
     @Column(name = "CREATION_DATE_TIME", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Accessors(chain = true)
     @Column(name = "UPDATING_DATE_TIME", nullable = false)
     private LocalDateTime updatedAt;
 

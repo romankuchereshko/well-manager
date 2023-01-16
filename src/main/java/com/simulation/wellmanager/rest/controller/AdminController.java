@@ -1,8 +1,6 @@
 package com.simulation.wellmanager.rest.controller;
 
 import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,13 +27,13 @@ public class AdminController {
 
         final List<FrameDTO> frameDTOS = frames.stream()
             .map(this.frameDTOMapper::toFrameDTO)
-            .collect(Collectors.toList());
+            .toList();
 
         return ResponseEntity.ok(frameDTOS);
     }
 
     @GetMapping(value = "/get-frame-by-id")
-    public ResponseEntity<Frame> getFrameById(final UUID frameId) {
+    public ResponseEntity<Frame> getFrameById(final Long frameId) {
 
         final Frame frame = this.frameService.getById(frameId);
 

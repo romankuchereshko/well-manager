@@ -22,7 +22,6 @@ public class Consumer {
 
     private final FrameService frameService;
 
-
     @KafkaListener(topics = "${topic.name}")
     public void consumeMessage(final String message) throws JsonProcessingException {
         log.info("Message consumed {}", message);

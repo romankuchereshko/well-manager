@@ -4,7 +4,7 @@ create table if not exists well (
 );
 
 create table if not exists frame (
-    id_frame uuid primary key not null,
+    id_frame serial primary key,
     id_well bigint not null,
     voltage double precision not null,
     electric_current double precision not null,

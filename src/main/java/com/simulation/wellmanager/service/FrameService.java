@@ -1,7 +1,6 @@
 package com.simulation.wellmanager.service;
 
 import java.util.List;
-import java.util.UUID;
 
 import oil.station.domain.frame.Frame;
 
@@ -15,8 +14,8 @@ public interface FrameService {
 
     List<Frame> getAll();
 
-    Frame getById(UUID frameId);
+    Frame getById(Long frameId);
 
-    void deleteById(UUID frameId);
+    void deleteById(Long frameId);
 
 }

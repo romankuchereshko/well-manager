@@ -2,14 +2,13 @@ package com.simulation.wellmanager.rest.dto;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 import lombok.Data;
 
 @Data
 public class FrameDTO implements Serializable {
 
-    private UUID id;
+    private Long id;
 
     private Long wellId;
 

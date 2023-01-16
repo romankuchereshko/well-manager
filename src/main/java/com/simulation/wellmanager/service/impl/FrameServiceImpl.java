@@ -2,7 +2,6 @@ package com.simulation.wellmanager.service.impl;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -41,7 +40,7 @@ public class FrameServiceImpl implements FrameService {
 
     @Override
     @Cacheable(cacheNames = "customer", key = "#id", unless = "#result == null")
-    public Frame getById(UUID frameId) {
+    public Frame getById(Long frameId) {
         log.info("Trying to find frame [{}] in DB", frameId);
         Optional<FrameEntity> optFrameEntity = this.frameRepository.findById(frameId);
 
@@ -58,9 +57,9 @@ public class FrameServiceImpl implements FrameService {
     @Override
     @CacheEvict(cacheNames = "frames", allEntries = true)
     public List<Frame> saveAll(final List<Frame> frames) {
-        final List<UUID> uuids = frames.stream().map(Frame::getId).toList();
+        final List<Long> frameIds = frames.stream().map(Frame::getId).toList();
 
-        log.info("Frames [{}] are going to be saved into DB", uuids);
+        log.info("Frames [{}] are going to be saved into DB", frameIds);
         final List<FrameEntity> frameEntities = this.frameRepository.saveAll(frames.stream()
             .map(this.frameEntityMapper::toEntity)
             .toList());
@@ -85,7 +84,7 @@ public class FrameServiceImpl implements FrameService {
     @Override
     @CacheEvict(cacheNames = "customers", allEntries = true)
     public Frame update(Frame frame) {
-        final UUID frameId = frame.getId();
+        final Long frameId = frame.getId();
 
         log.info("Trying to find frame [{}] in DB", frameId);
         Optional<FrameEntity> optFrameEntity = this.frameRepository.findById(frameId);
@@ -106,7 +105,7 @@ public class FrameServiceImpl implements FrameService {
     @Override
     @Caching(evict = {@CacheEvict(cacheNames = "customer", key = "#id"),
         @CacheEvict(cacheNames = "customers", allEntries = true)})
-    public void deleteById(UUID frameId) {
+    public void deleteById(Long frameId) {
         log.info("Trying to delete frame [{}] from DB", frameId);
         this.frameRepository.deleteById(frameId);
     }
