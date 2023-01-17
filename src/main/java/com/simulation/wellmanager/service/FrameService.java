@@ -6,15 +6,15 @@ import oil.station.domain.frame.Frame;
 
 public interface FrameService {
 
-    List<Frame> saveAll(List<Frame> frames);
-
-    Frame save(Frame frame);
-
-    Frame update(Frame frame);
-
     List<Frame> getAll();
 
     Frame getById(Long frameId);
+
+    boolean save(Frame frame);
+
+    boolean saveAll(List<Frame> frames);
+
+    Frame update(Frame frame);
 
     void deleteById(Long frameId);
 

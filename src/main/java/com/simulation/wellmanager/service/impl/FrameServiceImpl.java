@@ -1,7 +1,6 @@
 package com.simulation.wellmanager.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -39,75 +38,86 @@ public class FrameServiceImpl implements FrameService {
     }
 
     @Override
-    @Cacheable(cacheNames = "customer", key = "#id", unless = "#result == null")
-    public Frame getById(Long frameId) {
+    @Cacheable(cacheNames = "frames", key = "#frameId", unless = "#result == null")
+    public Frame getById(final Long frameId) {
         log.info("Trying to find frame [{}] in DB", frameId);
-        Optional<FrameEntity> optFrameEntity = this.frameRepository.findById(frameId);
 
-        if (optFrameEntity.isEmpty()) {
-            final String message = String.format("There is no frame %s in DB", frameId);
-            log.info(message);
-            throw new FrameException(message);
-        }
+        return this.frameRepository.findById(frameId)
+            .stream()
+            .findFirst()
+            .map(frameEntity -> {
 
-        log.info("Frame [{}] was fetched from DB", frameId);
-        return this.frameEntityMapper.toDomain(optFrameEntity.get());
+                log.info("Frame [{}] was fetched from DB", frameEntity.getId());
+                return this.frameEntityMapper.toDomain(frameEntity);
+            })
+            .orElseThrow(() -> {
+                final String message = String.format("There is no frame %s in DB", frameId);
+                log.info(message);
+
+                throw new FrameException(message);
+            });
+    }
+
+    @Override
+    @CacheEvict(cacheNames = "customers", allEntries = true)
+    public boolean save(final Frame frame) {
+
+        final FrameEntity savedFrame = this.frameRepository.save(this.frameEntityMapper.toEntity(frame));
+
+        log.info("Frame [{}] was successfully saved into DB", savedFrame.getId());
+
+        return true;
     }
 
     @Override
     @CacheEvict(cacheNames = "frames", allEntries = true)
-    public List<Frame> saveAll(final List<Frame> frames) {
-        final List<Long> frameIds = frames.stream().map(Frame::getId).toList();
-
-        log.info("Frames [{}] are going to be saved into DB", frameIds);
-        final List<FrameEntity> frameEntities = this.frameRepository.saveAll(frames.stream()
+    public boolean saveAll(final List<Frame> frames) {
+        final List<FrameEntity> newFrames = frames
+            .stream()
             .map(this.frameEntityMapper::toEntity)
-            .toList());
+            .toList();
+
+        final List<FrameEntity> frameEntities = this.frameRepository.saveAll(newFrames);
 
         log.info("Frames [{}] were successfully saved into DB",
             frameEntities.stream().map(FrameEntity::getId).toList());
 
-        return frames;
+        return true;
     }
 
     @Override
-    @CacheEvict(cacheNames = "customers", allEntries = true)
-    public Frame save(Frame frame) {
-        log.info("Frame [{}] is going to be saved into DB", frame.getId());
-        final FrameEntity frameEntity = frameRepository.save(this.frameEntityMapper.toEntity(frame));
-
-        log.info("Frame [{}] was successfully saved into DB", frameEntity.getId());
-
-        return this.frameEntityMapper.toDomain(frameEntity);
-    }
-
-    @Override
-    @CacheEvict(cacheNames = "customers", allEntries = true)
-    public Frame update(Frame frame) {
+    @CacheEvict(cacheNames = "frames", allEntries = true)
+    public Frame update(final Frame frame) {
         final Long frameId = frame.getId();
 
-        log.info("Trying to find frame [{}] in DB", frameId);
-        Optional<FrameEntity> optFrameEntity = this.frameRepository.findById(frameId);
+        return this.frameRepository.findById(frameId)
+            .stream()
+            .findFirst()
+            .map(frameEntity -> {
 
-        if (optFrameEntity.isEmpty()) {
-            final String message = String.format("There is no frame %s in DB", frameId);
-            log.info(message);
-            throw new FrameException(message);
-        }
+                log.info("Frame [{}] was fetched from DB and will be updated", frameEntity.getId());
+                final FrameEntity savedFrame = this.frameRepository.save(this.frameEntityMapper.toEntity(frame));
 
-        log.info("Frame [{}] was fetched from DB and will be updated", frameId);
-        final FrameEntity savedFrame = this.frameRepository.save(this.frameEntityMapper.toEntity(frame));
+                log.info("Frame [{}] was successfully updated in DB", frameEntity.getId());
+                return this.frameEntityMapper.toDomain(savedFrame);
+            })
+            .orElseThrow(() -> {
+                final String message = String.format("There is no frame %s in DB", frameId);
+                log.info(message);
 
-        log.info("Frame [{}] was successfully updated in DB", frameId);
-        return this.frameEntityMapper.toDomain(savedFrame);
+                throw new FrameException(message);
+            });
     }
 
     @Override
-    @Caching(evict = {@CacheEvict(cacheNames = "customer", key = "#id"),
-        @CacheEvict(cacheNames = "customers", allEntries = true)})
-    public void deleteById(Long frameId) {
+    @Caching(evict = {@CacheEvict(cacheNames = "frames", key = "#frameId"),
+        @CacheEvict(cacheNames = "frames", allEntries = true)})
+    public void deleteById(final Long frameId) {
         log.info("Trying to delete frame [{}] from DB", frameId);
+
         this.frameRepository.deleteById(frameId);
+
+        log.info("Frame [{}] was successfully deleted from DB", frameId);
     }
 
 

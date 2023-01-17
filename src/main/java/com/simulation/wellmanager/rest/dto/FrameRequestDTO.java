@@ -1,16 +1,17 @@
 package com.simulation.wellmanager.rest.dto;
 
 import java.io.Serializable;
-import java.time.OffsetDateTime;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder(toBuilder = true)
-public class FrameDTO implements Serializable {
-
-    private Long id;
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder(toBuilder = true)
+public class FrameRequestDTO implements Serializable {
 
     private Long wellId;
 
@@ -27,9 +28,5 @@ public class FrameDTO implements Serializable {
     private Double temperature;
 
     private Double liquidFlowRate;
-
-    private OffsetDateTime createdAt;
-
-    private OffsetDateTime updatedAt;
 
 }

@@ -14,6 +14,8 @@ public class FrameException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = -5721748379984509521L;
 
-    private final String message;
+    public FrameException(final String message) {
+        super(message);
+    }
 
 }

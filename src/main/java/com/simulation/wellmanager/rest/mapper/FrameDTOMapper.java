@@ -7,26 +7,37 @@ import org.springframework.stereotype.Component;
 import com.simulation.wellmanager.rest.dto.FrameDTO;
 import oil.station.domain.frame.Frame;
 
-
 @Component
 public class FrameDTOMapper {
 
     public FrameDTO toFrameDTO(final Frame frame) {
-        final FrameDTO frameDTO = new FrameDTO();
+        return FrameDTO.builder()
+            .id(frame.getId())
+            .wellId(frame.getWellId())
+            .voltage(frame.getVoltage())
+            .current(frame.getCurrent())
+            .speed(frame.getSpeed())
+            .frequency(frame.getFrequency())
+            .pressure(frame.getPressure())
+            .temperature(frame.getTemperature())
+            .liquidFlowRate(frame.getLiquidFlowRate())
+            .createdAt(frame.getCreatedAt().atOffset(ZoneOffset.UTC))
+            .updatedAt(frame.getUpdatedAt().atOffset(ZoneOffset.UTC))
+            .build();
+    }
 
-        frameDTO.setId(frame.getId());
-        frameDTO.setWellId(frame.getWellId());
-        frameDTO.setVoltage(frame.getVoltage());
-        frameDTO.setCurrent(frame.getCurrent());
-        frameDTO.setSpeed(frame.getSpeed());
-        frameDTO.setFrequency(frame.getFrequency());
-        frameDTO.setPressure(frame.getPressure());
-        frameDTO.setTemperature(frame.getTemperature());
-        frameDTO.setLiquidFlowRate(frame.getLiquidFlowRate());
-        frameDTO.setCreatedAt(frame.getCreatedAt().atOffset(ZoneOffset.UTC));
-        frameDTO.setUpdatedAt(frame.getUpdatedAt().atOffset(ZoneOffset.UTC));
-
-        return frameDTO;
+    public Frame toFrame(final FrameDTO frameDTO) {
+        return Frame.builder()
+            .id(frameDTO.getId())
+            .wellId(frameDTO.getWellId())
+            .voltage(frameDTO.getVoltage())
+            .current(frameDTO.getCurrent())
+            .speed(frameDTO.getSpeed())
+            .frequency(frameDTO.getFrequency())
+            .pressure(frameDTO.getPressure())
+            .temperature(frameDTO.getTemperature())
+            .liquidFlowRate(frameDTO.getLiquidFlowRate())
+            .build();
     }
 
 }
