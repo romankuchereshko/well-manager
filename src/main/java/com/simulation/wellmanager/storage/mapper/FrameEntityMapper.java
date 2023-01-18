@@ -1,6 +1,6 @@
-package com.simulation.wellmanager.jpa;
+package com.simulation.wellmanager.storage.mapper;
 
-import com.simulation.wellmanager.jpa.entity.FrameEntity;
+import com.simulation.wellmanager.storage.entity.FrameEntity;
 import oil.station.domain.frame.Frame;
 import org.mapstruct.Mapper;
 

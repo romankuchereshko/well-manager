@@ -1,10 +1,10 @@
-package com.simulation.wellmanager.service;
+package com.simulation.wellmanager.storage.repository;
 
 import java.util.List;
 
 import oil.station.domain.frame.Frame;
 
-public interface FrameService {
+public interface FrameRepository {
 
     List<Frame> getAll();
 
@@ -17,5 +17,4 @@ public interface FrameService {
     Frame update(Frame frame);
 
     void deleteById(Long frameId);
-
 }

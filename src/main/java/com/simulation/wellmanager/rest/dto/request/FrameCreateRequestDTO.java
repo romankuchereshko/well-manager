@@ -1,4 +1,4 @@
-package com.simulation.wellmanager.rest.dto;
+package com.simulation.wellmanager.rest.dto.request;
 
 import java.io.Serializable;
 
@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder(toBuilder = true)
-public class FrameRequestDTO implements Serializable {
+public class FrameCreateRequestDTO implements Serializable {
 
     private Long wellId;
 

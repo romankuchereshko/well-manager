@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.simulation.wellmanager.rest.dto.FrameDTO;
-import com.simulation.wellmanager.rest.dto.FrameRequestDTO;
-import com.simulation.wellmanager.rest.dto.FrameUpdateRequestDTO;
-import com.simulation.wellmanager.rest.dto.SuccessInfoDTO;
+import com.simulation.wellmanager.rest.dto.request.FrameCreateRequestDTO;
+import com.simulation.wellmanager.rest.dto.request.FrameUpdateCreateRequestDTO;
+import com.simulation.wellmanager.rest.dto.status.SuccessInfoDTO;
 import com.simulation.wellmanager.rest.mapper.FrameDTOMapper;
 import com.simulation.wellmanager.rest.mapper.FrameRequestDTOMapper;
 import com.simulation.wellmanager.service.FrameService;
@@ -51,9 +51,9 @@ public class AdminController {
     }
 
     @PostMapping(value = "/save-frame")
-    public ResponseEntity<SuccessInfoDTO> saveFrame(@RequestBody final FrameRequestDTO frameRequestDTO) {
+    public ResponseEntity<SuccessInfoDTO> saveFrame(@RequestBody final FrameCreateRequestDTO frameCreateRequestDTO) {
 
-        final Frame frame = this.frameRequestDTOMapper.toFrame(frameRequestDTO);
+        final Frame frame = this.frameRequestDTOMapper.toFrame(frameCreateRequestDTO);
 
         this.frameService.save(frame);
 
@@ -64,9 +64,9 @@ public class AdminController {
     }
 
     @PostMapping(value = "/save-all-frames")
-    public ResponseEntity<SuccessInfoDTO> saveAllFrames(@RequestBody final List<FrameRequestDTO> frameRequestDTOS) {
+    public ResponseEntity<SuccessInfoDTO> saveAllFrames(@RequestBody final List<FrameCreateRequestDTO> frameCreateRequestDTOS) {
 
-        List<Frame> frames = frameRequestDTOS
+        List<Frame> frames = frameCreateRequestDTOS
             .stream()
             .map(this.frameRequestDTOMapper::toFrame)
             .toList();
@@ -80,7 +80,7 @@ public class AdminController {
     }
 
     @PostMapping(value = "/update-frame")
-    public ResponseEntity<FrameDTO> updateFrame(@RequestBody final FrameUpdateRequestDTO frameUpdateRequestDTO) {
+    public ResponseEntity<FrameDTO> updateFrame(@RequestBody final FrameUpdateCreateRequestDTO frameUpdateRequestDTO) {
 
         final Frame frameToUpdate = this.frameRequestDTOMapper.toFrame(frameUpdateRequestDTO);
 

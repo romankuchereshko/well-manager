@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.simulation.wellmanager.domain.exception.FrameException;
-import com.simulation.wellmanager.rest.dto.ErrorInfoDTO;
+import com.simulation.wellmanager.rest.dto.status.ErrorInfoDTO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

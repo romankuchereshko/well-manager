@@ -1,4 +1,4 @@
-package com.simulation.wellmanager.rest.dto;
+package com.simulation.wellmanager.rest.dto.status;
 
 import java.io.Serializable;
 
@@ -7,10 +7,12 @@ import lombok.Data;
 
 @Data
 @Builder(toBuilder = true)
-public class SuccessInfoDTO implements Serializable {
+public class ErrorInfoDTO implements Serializable {
 
     private Integer status;
 
     private String message;
+    
+    private String timestamp;
 
 }

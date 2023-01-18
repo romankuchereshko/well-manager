@@ -1,4 +1,4 @@
-package com.simulation.wellmanager.jpa.entity;
+package com.simulation.wellmanager.storage.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
