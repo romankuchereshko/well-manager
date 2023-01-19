@@ -58,6 +58,9 @@ public class FrameEntity implements Serializable {
     @Column(name = "LIQUID_FLOW_RATE", nullable = false)
     private Double liquidFlowRate;
 
+    @Column(name = "IS_CRITICAL", nullable = false)
+    private Boolean isCritical;
+
     @Accessors(chain = true)
     @Column(name = "CREATION_DATE_TIME", nullable = false, updatable = false)
     private LocalDateTime createdAt;

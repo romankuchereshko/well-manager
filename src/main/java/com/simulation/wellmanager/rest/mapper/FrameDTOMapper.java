@@ -21,6 +21,7 @@ public class FrameDTOMapper {
             .pressure(frame.getPressure())
             .temperature(frame.getTemperature())
             .liquidFlowRate(frame.getLiquidFlowRate())
+            .isCritical(frame.getIsCritical())
             .createdAt(frame.getCreatedAt().atOffset(ZoneOffset.UTC))
             .updatedAt(frame.getUpdatedAt().atOffset(ZoneOffset.UTC))
             .build();
@@ -36,6 +37,7 @@ public class FrameDTOMapper {
             .frequency(frameDTO.getFrequency())
             .pressure(frameDTO.getPressure())
             .temperature(frameDTO.getTemperature())
+            .isCritical(frameDTO.getIsCritical())
             .liquidFlowRate(frameDTO.getLiquidFlowRate())
             .build();
     }

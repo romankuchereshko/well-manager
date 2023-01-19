@@ -66,7 +66,7 @@ public class AdminController {
     @PostMapping(value = "/save-all-frames")
     public ResponseEntity<SuccessInfoDTO> saveAllFrames(@RequestBody final List<FrameCreateRequestDTO> frameCreateRequestDTOS) {
 
-        List<Frame> frames = frameCreateRequestDTOS
+        final List<Frame> frames = frameCreateRequestDTOS
             .stream()
             .map(this.frameRequestDTOMapper::toFrame)
             .toList();

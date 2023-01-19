@@ -13,6 +13,7 @@ create table if not exists frame (
     pressure double precision not null,
     temperature double precision not null,
     liquid_flow_rate double precision not null,
+    is_critical boolean not null default false,
     creation_date_time timestamp default current_timestamp,
     updating_date_time timestamp default current_timestamp,
     constraint fk_well foreign key(id_well) references well(id_well)

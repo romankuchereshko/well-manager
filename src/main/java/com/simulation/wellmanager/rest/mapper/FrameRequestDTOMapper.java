@@ -19,6 +19,7 @@ public class FrameRequestDTOMapper {
             .pressure(frameCreateRequestDTO.getPressure())
             .temperature(frameCreateRequestDTO.getTemperature())
             .liquidFlowRate(frameCreateRequestDTO.getLiquidFlowRate())
+            .isCritical(frameCreateRequestDTO.getIsCritical())
             .build();
     }
 
@@ -33,6 +34,7 @@ public class FrameRequestDTOMapper {
             .pressure(frameUpdateRequestDTO.getPressure())
             .temperature(frameUpdateRequestDTO.getTemperature())
             .liquidFlowRate(frameUpdateRequestDTO.getLiquidFlowRate())
+            .isCritical(frameUpdateRequestDTO.getIsCritical())
             .build();
     }
 

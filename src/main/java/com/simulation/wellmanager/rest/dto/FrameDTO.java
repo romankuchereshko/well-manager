@@ -28,6 +28,8 @@ public class FrameDTO implements Serializable {
 
     private Double liquidFlowRate;
 
+    private Boolean isCritical;
+
     private OffsetDateTime createdAt;
 
     private OffsetDateTime updatedAt;
