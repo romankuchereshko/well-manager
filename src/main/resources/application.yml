@@ -4,7 +4,7 @@ server:
 spring:
   kafka:
     consumer:
-      group-id: default
+      group-id: first_group
   datasource:
     url: jdbc:postgresql://localhost:5432/frame
     username: ${DB_USERNAME}
