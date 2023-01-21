@@ -26,9 +26,8 @@ public class SwaggerConfig implements WebMvcConfigurer {
     }
 
     private ApiInfo apiInfoMetaData() {
-
         return new ApiInfoBuilder().title("Well manager")
-            .description("Application for monitoring frames values from the well station")
+            .description("Application for monitoring mock frames from oil station")
             .contact(new Contact("Roman Kuchereshko", "https://github.com/romankuchereshko", "rj.ten.april@gmail.com"))
             .license("Apache 2.0")
             .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")

@@ -9,13 +9,13 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simulation.wellmanager.service.FrameService;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import oil.station.domain.frame.Frame;
 
-@RequiredArgsConstructor
 @Slf4j
 @Component
+@AllArgsConstructor
 public class Consumer {
 
     private final ObjectMapper objectMapper;
@@ -32,3 +32,4 @@ public class Consumer {
     }
 
 }
+
