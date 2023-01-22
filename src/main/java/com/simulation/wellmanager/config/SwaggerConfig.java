@@ -22,7 +22,8 @@ public class SwaggerConfig implements WebMvcConfigurer {
         return new Docket(DocumentationType.SWAGGER_2).select()
             .apis(RequestHandlerSelectors.basePackage("com.simulation.wellmanager.rest.controller"))
             .paths(PathSelectors.regex("/.*"))
-            .build().apiInfo(apiInfoMetaData());
+            .build()
+            .apiInfo(apiInfoMetaData());
     }
 
     private ApiInfo apiInfoMetaData() {
