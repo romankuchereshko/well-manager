@@ -24,7 +24,6 @@ import lombok.experimental.Accessors;
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 @Entity
 @Table(name = "FRAME")
 public class FrameEntity implements Serializable {

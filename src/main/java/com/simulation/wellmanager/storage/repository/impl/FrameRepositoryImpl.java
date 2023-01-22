@@ -70,17 +70,17 @@ public class FrameRepositoryImpl implements FrameRepository {
 
     @Override
     public List<Frame> saveAll(final List<Frame> frames) {
-        final List<FrameEntity> newFrames = frames
+        final List<FrameEntity> frameEntities = frames
             .stream()
             .map(this.frameEntityMapper::toEntity)
             .toList();
 
-        final List<FrameEntity> frameEntities = this.frameEntityRepository.saveAll(newFrames);
+        final List<FrameEntity> savedFrames = this.frameEntityRepository.saveAll(frameEntities);
 
         log.info("Frames [{}] were successfully saved into DB",
-            frameEntities.stream().map(FrameEntity::getId).toList());
+            savedFrames.stream().map(FrameEntity::getId).toList());
 
-        return frameEntities.stream()
+        return savedFrames.stream()
             .map(this.frameEntityMapper::toDomain)
             .toList();
     }
@@ -96,8 +96,8 @@ public class FrameRepositoryImpl implements FrameRepository {
             .map(frameEntity -> {
 
                 log.info("Frame [{}] was fetched from DB and will be updated", frameEntity.getId());
-                final FrameEntity updatedFrame = this.frameEntityRepository.save(
-                    this.frameEntityMapper.toEntity(frame));
+                final FrameEntity updatedFrame = this.frameEntityRepository
+                    .save(this.frameEntityMapper.toEntity(frame));
                 log.info("Frame [{}] was successfully updated in DB", frameEntity.getId());
                 this.entityManager.flush();
                 log.info("Updated frame entity: [[{}].", updatedFrame);

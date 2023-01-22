@@ -35,11 +35,11 @@ public class AdminController {
 
         final List<Frame> frames = this.frameService.getAll();
 
-        final List<FrameDTO> frameDTOS = frames.stream()
+        final List<FrameDTO> frameDTOs = frames.stream()
             .map(this.frameDTOMapper::toFrameDTO)
             .toList();
 
-        return ResponseEntity.ok(frameDTOS);
+        return ResponseEntity.ok(frameDTOs);
     }
 
     @GetMapping(value = "/get-frame")
@@ -64,9 +64,9 @@ public class AdminController {
     }
 
     @PostMapping(value = "/save-all-frames")
-    public ResponseEntity<SuccessInfoDTO> saveAllFrames(@RequestBody final List<FrameCreateRequestDTO> frameCreateRequestDTOS) {
+    public ResponseEntity<SuccessInfoDTO> saveAllFrames(@RequestBody final List<FrameCreateRequestDTO> frameCreateRequestDTOs) {
 
-        final List<Frame> frames = frameCreateRequestDTOS
+        final List<Frame> frames = frameCreateRequestDTOs
             .stream()
             .map(this.frameRequestDTOMapper::toFrame)
             .toList();
