@@ -14,7 +14,7 @@ import com.simulation.wellmanager.storage.mapper.FrameEntityMapper;
 import com.simulation.wellmanager.storage.repository.FrameRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import oil.station.domain.frame.Frame;
+import com.simulation.library.domain.Frame;
 
 @Slf4j
 @AllArgsConstructor

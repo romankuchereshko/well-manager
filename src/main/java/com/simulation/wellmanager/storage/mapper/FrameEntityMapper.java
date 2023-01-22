@@ -1,7 +1,7 @@
 package com.simulation.wellmanager.storage.mapper;
 
 import com.simulation.wellmanager.storage.entity.FrameEntity;
-import oil.station.domain.frame.Frame;
+import com.simulation.library.domain.Frame;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

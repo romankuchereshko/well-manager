@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simulation.wellmanager.service.FrameService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import oil.station.domain.frame.Frame;
+import com.simulation.library.domain.Frame;
 
 @Slf4j
 @Component

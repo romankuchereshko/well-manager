@@ -8,11 +8,11 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Component;
 
+import com.simulation.library.domain.Frame;
 import com.simulation.wellmanager.service.FrameService;
 import com.simulation.wellmanager.storage.repository.FrameRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import oil.station.domain.frame.Frame;
 
 @AllArgsConstructor
 @Slf4j

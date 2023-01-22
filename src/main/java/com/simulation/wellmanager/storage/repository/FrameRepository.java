@@ -2,7 +2,7 @@ package com.simulation.wellmanager.storage.repository;
 
 import java.util.List;
 
-import oil.station.domain.frame.Frame;
+import com.simulation.library.domain.Frame;
 
 public interface FrameRepository {
 

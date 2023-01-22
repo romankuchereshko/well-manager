@@ -2,24 +2,29 @@ package com.simulation.wellmanager.rest.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.simulation.library.domain.Frame;
 import com.simulation.wellmanager.rest.dto.FrameDTO;
 import com.simulation.wellmanager.rest.dto.request.FrameCreateRequestDTO;
 import com.simulation.wellmanager.rest.dto.request.FrameUpdateCreateRequestDTO;
 import com.simulation.wellmanager.rest.dto.status.SuccessInfoDTO;
 import com.simulation.wellmanager.rest.mapper.FrameDTOMapper;
 import com.simulation.wellmanager.rest.mapper.FrameRequestDTOMapper;
+import com.simulation.wellmanager.rest.validator.FrameValueConstraint;
 import com.simulation.wellmanager.service.FrameService;
 import lombok.AllArgsConstructor;
-import oil.station.domain.frame.Frame;
 
+@Validated
 @AllArgsConstructor
 @RestController
 public class AdminController {
@@ -51,7 +56,10 @@ public class AdminController {
     }
 
     @PostMapping(value = "/save-frame")
-    public ResponseEntity<SuccessInfoDTO> saveFrame(@RequestBody final FrameCreateRequestDTO frameCreateRequestDTO) {
+    public ResponseEntity<SuccessInfoDTO> saveFrame(
+        @RequestBody
+        @FrameValueConstraint
+        @Valid final FrameCreateRequestDTO frameCreateRequestDTO) {
 
         final Frame frame = this.frameRequestDTOMapper.toFrame(frameCreateRequestDTO);
 
@@ -63,8 +71,10 @@ public class AdminController {
             .build());
     }
 
+    // TODO validate list of frames
     @PostMapping(value = "/save-all-frames")
-    public ResponseEntity<SuccessInfoDTO> saveAllFrames(@RequestBody final List<FrameCreateRequestDTO> frameCreateRequestDTOs) {
+    public ResponseEntity<SuccessInfoDTO> saveAllFrames(
+        @RequestBody final List<FrameCreateRequestDTO> frameCreateRequestDTOs) {
 
         final List<Frame> frames = frameCreateRequestDTOs
             .stream()
@@ -80,7 +90,10 @@ public class AdminController {
     }
 
     @PostMapping(value = "/update-frame")
-    public ResponseEntity<FrameDTO> updateFrame(@RequestBody final FrameUpdateCreateRequestDTO frameUpdateRequestDTO) {
+    public ResponseEntity<FrameDTO> updateFrame(
+        @RequestBody
+        @FrameValueConstraint
+        @Valid final FrameUpdateCreateRequestDTO frameUpdateRequestDTO) {
 
         final Frame frameToUpdate = this.frameRequestDTOMapper.toFrame(frameUpdateRequestDTO);
 

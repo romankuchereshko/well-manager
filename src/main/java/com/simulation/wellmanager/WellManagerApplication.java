@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.simulation.library", "com.simulation.wellmanager"})
 public class WellManagerApplication {
 
     public static void main(String[] args) {

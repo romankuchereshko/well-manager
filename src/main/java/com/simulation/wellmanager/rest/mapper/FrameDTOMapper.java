@@ -3,7 +3,7 @@ package com.simulation.wellmanager.rest.mapper;
 import java.time.ZoneOffset;
 
 import com.simulation.wellmanager.rest.dto.FrameDTO;
-import oil.station.domain.frame.Frame;
+import com.simulation.library.domain.Frame;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
