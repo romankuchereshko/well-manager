@@ -20,7 +20,8 @@ import com.simulation.wellmanager.rest.dto.request.FrameUpdateCreateRequestDTO;
 import com.simulation.wellmanager.rest.dto.status.SuccessInfoDTO;
 import com.simulation.wellmanager.rest.mapper.FrameDTOMapper;
 import com.simulation.wellmanager.rest.mapper.FrameRequestDTOMapper;
-import com.simulation.wellmanager.rest.validator.FrameValueConstraint;
+import com.simulation.wellmanager.rest.validator.constraint.FrameValueConstraint;
+import com.simulation.wellmanager.rest.validator.constraint.FrameValueListConstraint;
 import com.simulation.wellmanager.service.FrameService;
 import lombok.AllArgsConstructor;
 
@@ -71,10 +72,11 @@ public class AdminController {
             .build());
     }
 
-    // TODO validate list of frames
     @PostMapping(value = "/save-all-frames")
     public ResponseEntity<SuccessInfoDTO> saveAllFrames(
-        @RequestBody final List<FrameCreateRequestDTO> frameCreateRequestDTOs) {
+        @RequestBody
+        @FrameValueListConstraint
+        @Valid final List<FrameCreateRequestDTO> frameCreateRequestDTOs) {
 
         final List<Frame> frames = frameCreateRequestDTOs
             .stream()
