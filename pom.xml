@@ -18,9 +18,9 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>oil.station</groupId>
+            <groupId>com.simulation.library</groupId>
             <artifactId>library</artifactId>
-            <version>1.7-SNAPSHOT</version>
+            <version>1.8-SNAPSHOT</version>
         </dependency>
 
         <!--        SPRING-->

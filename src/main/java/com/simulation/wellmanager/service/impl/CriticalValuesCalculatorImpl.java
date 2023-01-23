@@ -1,6 +1,7 @@
 package com.simulation.wellmanager.service.impl;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.stereotype.Component;
 
@@ -20,7 +21,7 @@ public class CriticalValuesCalculatorImpl implements CriticalValuesCalculator {
 
     @Override
     public void calculateAndSetIsValueCritical(final Frame frame) {
-        log.info("Starting calculating is frame [{}] has critical value", frame);
+        log.info("Starting calculating is frame has critical value [{}]", frame);
 
         final Value voltage = this.frameConfigurations.getVoltage();
         final Value current = this.frameConfigurations.getCurrent();
@@ -41,8 +42,14 @@ public class CriticalValuesCalculatorImpl implements CriticalValuesCalculator {
             )
             .contains(Boolean.TRUE);
 
+        if (!Objects.equals(frame.getIsCritical(), atLeastOneValueIsCritical)) {
+            log.info("Frame had critical value: [{}] before calculation, but it was recalculated to: [{}]",
+                frame.getIsCritical(),
+                atLeastOneValueIsCritical);
+        }
+
         frame.setIsCritical(atLeastOneValueIsCritical);
-        log.info("Frame [{}] critical value was set to: [{}]", frame, atLeastOneValueIsCritical);
+        log.info("Finished calculating frame critical value [{}]", frame);
     }
 
     private boolean isCritical(final Value configValue, final Double valueToCheck) {
