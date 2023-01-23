@@ -24,7 +24,7 @@ public class FrameValidatorImpl implements FrameValidator {
         log.info("Starting validating frame [{}]", frame);
 
         if (Objects.isNull(frame)) {
-            final String message = "Given frame %s is null";
+            final String message = "Given frame is null";
             log.info(message);
             throw new FrameException(message);
         }
@@ -51,7 +51,7 @@ public class FrameValidatorImpl implements FrameValidator {
         if (isValidRequest) {
             log.info("Frame [{}] is valid", frame);
         } else {
-            final String message = String.format("Given frame %s is not valid", frame);
+            final String message = String.format("Given frame is not valid %s", frame);
             log.info(message);
             throw new FrameException(message);
         }

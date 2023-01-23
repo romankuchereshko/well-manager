@@ -29,6 +29,4 @@ public class FrameCreateRequestDTO implements Serializable {
 
     private Double liquidFlowRate;
 
-    private Boolean IsCritical;
-
 }

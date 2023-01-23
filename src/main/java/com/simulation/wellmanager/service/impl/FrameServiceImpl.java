@@ -11,18 +11,17 @@ import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Component;
 
 import com.simulation.library.domain.Frame;
-import com.simulation.library.producer.FrameSender;
 import com.simulation.wellmanager.service.CriticalValuesCalculator;
 import com.simulation.wellmanager.service.FrameService;
 import com.simulation.wellmanager.service.FrameValidator;
+import com.simulation.wellmanager.service.producer.FrameSender;
 import com.simulation.wellmanager.storage.repository.FrameRepository;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
+@AllArgsConstructor
 @CacheConfig(cacheNames = "frameCache")
 public class FrameServiceImpl implements FrameService {
 
@@ -33,9 +32,6 @@ public class FrameServiceImpl implements FrameService {
     private final CriticalValuesCalculator criticalValuesCalculator;
 
     private final FrameSender frameSender;
-
-    @Value("${spring.kafka.topic.alert-topic}")
-    private String topic;
 
     @Override
     @Cacheable(cacheNames = "frames")
@@ -57,7 +53,7 @@ public class FrameServiceImpl implements FrameService {
 
         final Frame savedFrame = this.frameRepository.save(frame);
 
-        this.frameSender.send(Collections.singleton(frame), this.topic);
+        this.frameSender.send(Collections.singleton(frame));
 
         return savedFrame;
     }
@@ -73,7 +69,7 @@ public class FrameServiceImpl implements FrameService {
 
         final List<Frame> savedFrames = this.frameRepository.saveAll(frames);
 
-        this.frameSender.send(savedFrames, this.topic);
+        this.frameSender.send(savedFrames);
 
         return savedFrames;
     }
@@ -86,7 +82,7 @@ public class FrameServiceImpl implements FrameService {
 
         final Frame updateFrame = this.frameRepository.update(frame);
 
-        this.frameSender.send(Collections.singleton(updateFrame), this.topic);
+        this.frameSender.send(Collections.singleton(updateFrame));
 
         return updateFrame;
     }

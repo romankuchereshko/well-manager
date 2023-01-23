@@ -1,6 +1,7 @@
 package com.simulation.wellmanager.rest.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -54,22 +55,22 @@ public class AdminController {
         return ResponseEntity.ok(this.frameDTOMapper.toFrameDTO(frame));
     }
 
-    @PostMapping(value = "/save-frame")
-    public ResponseEntity<SuccessInfoDTO> saveFrame(
+    @PostMapping(value = "/create-frame")
+    public ResponseEntity<SuccessInfoDTO> createFrame(
         @RequestBody @Valid final FrameCreateRequestDTO frameCreateRequestDTO) {
 
         final Frame frame = this.frameRequestDTOMapper.toFrame(frameCreateRequestDTO);
 
-        this.frameService.save(frame);
+        final Frame savedFrame = this.frameService.save(frame);
 
         return ResponseEntity.ok(SuccessInfoDTO.builder()
             .status(HttpStatus.OK.value())
-            .message("Frame was successfully saved")
+            .message(String.format("Frame %s was successfully saved", savedFrame.getId()))
             .build());
     }
 
-    @PostMapping(value = "/save-all-frames")
-    public ResponseEntity<SuccessInfoDTO> saveAllFrames(
+    @PostMapping(value = "/create-frames")
+    public ResponseEntity<SuccessInfoDTO> createFrames(
         @RequestBody @Valid final List<FrameCreateRequestDTO> frameCreateRequestDTOs) {
 
         final List<Frame> frames = frameCreateRequestDTOs
@@ -77,11 +78,15 @@ public class AdminController {
             .map(this.frameRequestDTOMapper::toFrame)
             .toList();
 
-        this.frameService.saveAll(frames);
+        final List<Frame> savedFrames = this.frameService.saveAll(frames);
+
+        final String frameIds = savedFrames.stream()
+            .map(frame -> String.valueOf(frame.getId()))
+            .collect(Collectors.joining(", "));
 
         return ResponseEntity.ok(SuccessInfoDTO.builder()
             .status(HttpStatus.OK.value())
-            .message("Frames were successfully saved")
+            .message(String.format("Frames %s were successfully saved", frameIds))
             .build());
     }
 
