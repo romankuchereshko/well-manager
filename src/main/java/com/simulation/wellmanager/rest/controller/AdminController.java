@@ -20,8 +20,6 @@ import com.simulation.wellmanager.rest.dto.request.FrameUpdateCreateRequestDTO;
 import com.simulation.wellmanager.rest.dto.status.SuccessInfoDTO;
 import com.simulation.wellmanager.rest.mapper.FrameDTOMapper;
 import com.simulation.wellmanager.rest.mapper.FrameRequestDTOMapper;
-import com.simulation.wellmanager.rest.validator.constraint.FrameValueConstraint;
-import com.simulation.wellmanager.rest.validator.constraint.FrameValueListConstraint;
 import com.simulation.wellmanager.service.FrameService;
 import lombok.AllArgsConstructor;
 
@@ -58,9 +56,7 @@ public class AdminController {
 
     @PostMapping(value = "/save-frame")
     public ResponseEntity<SuccessInfoDTO> saveFrame(
-        @RequestBody
-        @FrameValueConstraint
-        @Valid final FrameCreateRequestDTO frameCreateRequestDTO) {
+        @RequestBody @Valid final FrameCreateRequestDTO frameCreateRequestDTO) {
 
         final Frame frame = this.frameRequestDTOMapper.toFrame(frameCreateRequestDTO);
 
@@ -74,9 +70,7 @@ public class AdminController {
 
     @PostMapping(value = "/save-all-frames")
     public ResponseEntity<SuccessInfoDTO> saveAllFrames(
-        @RequestBody
-        @FrameValueListConstraint
-        @Valid final List<FrameCreateRequestDTO> frameCreateRequestDTOs) {
+        @RequestBody @Valid final List<FrameCreateRequestDTO> frameCreateRequestDTOs) {
 
         final List<Frame> frames = frameCreateRequestDTOs
             .stream()
@@ -93,9 +87,7 @@ public class AdminController {
 
     @PostMapping(value = "/update-frame")
     public ResponseEntity<FrameDTO> updateFrame(
-        @RequestBody
-        @FrameValueConstraint
-        @Valid final FrameUpdateCreateRequestDTO frameUpdateRequestDTO) {
+        @RequestBody @Valid final FrameUpdateCreateRequestDTO frameUpdateRequestDTO) {
 
         final Frame frameToUpdate = this.frameRequestDTOMapper.toFrame(frameUpdateRequestDTO);
 

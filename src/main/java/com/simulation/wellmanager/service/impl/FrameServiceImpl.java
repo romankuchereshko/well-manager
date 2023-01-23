@@ -9,7 +9,9 @@ import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Component;
 
 import com.simulation.library.domain.Frame;
+import com.simulation.wellmanager.service.CriticalValuesCalculator;
 import com.simulation.wellmanager.service.FrameService;
+import com.simulation.wellmanager.service.FrameValidator;
 import com.simulation.wellmanager.storage.repository.FrameRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,10 @@ import lombok.extern.slf4j.Slf4j;
 public class FrameServiceImpl implements FrameService {
 
     private final FrameRepository frameRepository;
+
+    private final FrameValidator frameValidator;
+
+    private final CriticalValuesCalculator criticalValuesCalculator;
 
     @Override
     @Cacheable(cacheNames = "frames")
@@ -37,18 +43,32 @@ public class FrameServiceImpl implements FrameService {
     @Override
     @CacheEvict(cacheNames = "frames", allEntries = true)
     public Frame save(final Frame frame) {
+
+        this.frameValidator.validateFrame(frame);
+        this.criticalValuesCalculator.calculateAndSetIsValueCritical(frame);
+
         return this.frameRepository.save(frame);
     }
 
     @Override
     @CacheEvict(cacheNames = "frames", allEntries = true)
     public List<Frame> saveAll(final List<Frame> frames) {
+
+        frames.forEach(frame -> {
+            this.frameValidator.validateFrame(frame);
+            this.criticalValuesCalculator.calculateAndSetIsValueCritical(frame);
+        });
+
         return this.frameRepository.saveAll(frames);
     }
 
     @Override
     @CacheEvict(cacheNames = "frames", allEntries = true)
     public Frame update(final Frame frame) {
+
+        this.frameValidator.validateFrame(frame);
+        this.criticalValuesCalculator.calculateAndSetIsValueCritical(frame);
+
         return this.frameRepository.update(frame);
     }
 

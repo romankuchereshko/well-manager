@@ -63,6 +63,7 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - db-credentials.env
+      POSTGRES_DB: frame
+      POSTGRES_PASSWORD: password
     volumes:
       - "./init.sql:/docker-entrypoint-initdb.d/init.sql"

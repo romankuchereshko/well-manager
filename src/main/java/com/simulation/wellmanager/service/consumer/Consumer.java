@@ -22,7 +22,7 @@ public class Consumer {
 
     private final FrameService frameService;
 
-    @KafkaListener(topics = "${topic.name}")
+    @KafkaListener(topics = "${spring.kafka.topic.oil-station-topic}")
     public void consumeMessage(final String message) throws JsonProcessingException {
         log.info("Message consumed {}", message);
 

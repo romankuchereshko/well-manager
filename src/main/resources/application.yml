@@ -5,6 +5,9 @@ spring:
   kafka:
     consumer:
       group-id: first_group
+    topic:
+      oil-station-topic: oil_station_frames
+      alert-topic: alert_frames
   datasource:
     url: jdbc:postgresql://localhost:5432/frame
     username: ${DB_USERNAME}
@@ -29,6 +32,3 @@ spring:
     redis:
       time-to-live: 30
       cache-null-values: false
-
-topic:
-  name: frames
