@@ -42,14 +42,8 @@ public class CriticalValuesCalculatorImpl implements CriticalValuesCalculator {
             )
             .contains(Boolean.TRUE);
 
-        if (!Objects.equals(frame.getIsCritical(), atLeastOneValueIsCritical)) {
-            log.info("Frame had critical value: [{}] before calculation, but it was recalculated to: [{}]",
-                frame.getIsCritical(),
-                atLeastOneValueIsCritical);
-        }
-
         frame.setIsCritical(atLeastOneValueIsCritical);
-        log.info("Finished calculating frame critical value [{}]", frame);
+        log.info("Finished calculating, frame isCritical=[{}]", atLeastOneValueIsCritical);
     }
 
     private boolean isCritical(final Value configValue, final Double valueToCheck) {

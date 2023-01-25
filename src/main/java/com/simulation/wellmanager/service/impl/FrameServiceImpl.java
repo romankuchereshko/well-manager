@@ -2,8 +2,12 @@ package com.simulation.wellmanager.service.impl;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -53,7 +57,11 @@ public class FrameServiceImpl implements FrameService {
 
         final Frame savedFrame = this.frameRepository.save(frame);
 
-        this.frameSender.send(Collections.singleton(frame));
+        if (Objects.equals(savedFrame.getIsCritical(), Boolean.TRUE)) {
+            log.info("Frame [{}] have critical values, it going to be sent to alert service", savedFrame.getId());
+            CompletableFuture
+                .runAsync(() -> this.frameSender.send(Collections.singleton(savedFrame)));
+        }
 
         return savedFrame;
     }
@@ -69,7 +77,15 @@ public class FrameServiceImpl implements FrameService {
 
         final List<Frame> savedFrames = this.frameRepository.saveAll(frames);
 
-        this.frameSender.send(savedFrames);
+        final Map<Long, Frame> criticalFrames = savedFrames.stream()
+            .filter(Frame::getIsCritical)
+            .collect(Collectors.toMap(Frame::getId, Function.identity()));
+
+        if (!criticalFrames.isEmpty()) {
+            log.info("Frames [{}] have critical values, it going to be sent to alert service", criticalFrames.keySet());
+            CompletableFuture
+                .runAsync(() -> this.frameSender.send(criticalFrames.values()));
+        }
 
         return savedFrames;
     }
@@ -80,11 +96,15 @@ public class FrameServiceImpl implements FrameService {
         this.frameValidator.validateFrame(frame);
         this.criticalValuesCalculator.calculateAndSetIsValueCritical(frame);
 
-        final Frame updateFrame = this.frameRepository.update(frame);
+        final Frame updatedFrame = this.frameRepository.update(frame);
 
-        this.frameSender.send(Collections.singleton(updateFrame));
+        if (Objects.equals(updatedFrame.getIsCritical(), Boolean.TRUE)) {
+            log.info("Frame [{}] have critical values, it going to be sent to alert service", updatedFrame.getId());
+            CompletableFuture
+                .runAsync(() -> this.frameSender.send(Collections.singleton(updatedFrame)));
+        }
 
-        return updateFrame;
+        return updatedFrame;
     }
 
     @Override

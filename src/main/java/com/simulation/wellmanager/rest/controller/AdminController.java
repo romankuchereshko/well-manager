@@ -65,7 +65,7 @@ public class AdminController {
 
         return ResponseEntity.ok(SuccessInfoDTO.builder()
             .status(HttpStatus.OK.value())
-            .message(String.format("Frame %s was successfully saved", savedFrame.getId()))
+            .message(String.format("Frame %s was successfully created", savedFrame.getId()))
             .build());
     }
 
@@ -86,7 +86,7 @@ public class AdminController {
 
         return ResponseEntity.ok(SuccessInfoDTO.builder()
             .status(HttpStatus.OK.value())
-            .message(String.format("Frames %s were successfully saved", frameIds))
+            .message(String.format("Frames %s were successfully created", frameIds))
             .build());
     }
 
@@ -108,7 +108,7 @@ public class AdminController {
 
         return ResponseEntity.ok(SuccessInfoDTO.builder()
             .status(HttpStatus.OK.value())
-            .message("Frame was successfully deleted")
+            .message(String.format("Frame %s was successfully deleted", frameId))
             .build());
     }
 
