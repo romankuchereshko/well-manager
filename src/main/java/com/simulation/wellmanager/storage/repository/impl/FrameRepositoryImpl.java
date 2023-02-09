@@ -42,18 +42,18 @@ public class FrameRepositoryImpl implements FrameRepository {
 
     @Override
     public Frame getById(final Long frameId) {
-        log.info("Staring fetching frame [{}] from DB", frameId);
+        log.info("Staring fetching frame with id=[{}] from DB", frameId);
 
         return this.frameEntityRepository.findById(frameId)
             .stream()
             .findFirst()
             .map(frameEntity -> {
 
-                log.info("Frame [{}] was fetched from DB", frameEntity.getId());
+                log.info("Frame with id=[{}] was fetched from DB", frameEntity.getId());
                 return this.frameEntityMapper.toDomain(frameEntity);
             })
             .orElseThrow(() -> {
-                final String message = String.format("There is no frame %s in DB", frameId);
+                final String message = String.format("There is no frame  with id=%s in DB", frameId);
                 log.info(message);
 
                 throw new FrameException(message);
@@ -63,7 +63,7 @@ public class FrameRepositoryImpl implements FrameRepository {
     @Override
     public Frame save(final Frame frame) {
         final FrameEntity savedFrame = this.frameEntityRepository.save(this.frameEntityMapper.toEntity(frame));
-        log.info("Frame [{}] was successfully saved into DB", savedFrame.getId());
+        log.info("Frame  with id=[{}] was successfully saved into DB", savedFrame.getId());
 
         return this.frameEntityMapper.toDomain(savedFrame);
     }
@@ -77,7 +77,7 @@ public class FrameRepositoryImpl implements FrameRepository {
 
         final List<FrameEntity> savedFrames = this.frameEntityRepository.saveAll(frameEntities);
 
-        log.info("Frames [{}] were successfully saved into DB",
+        log.info("Frames  with ids=[{}] were successfully saved into DB",
             savedFrames.stream().map(FrameEntity::getId).toList());
 
         return savedFrames.stream()
@@ -95,18 +95,18 @@ public class FrameRepositoryImpl implements FrameRepository {
             .findFirst()
             .map(frameEntity -> {
 
-                log.info("Frame [{}] was fetched from DB and will be updated", frameEntity.getId());
+                log.info("Frame  with id=[{}] was fetched from DB and will be updated", frameEntity.getId());
                 final FrameEntity updatedFrame = this.frameEntityRepository
                     .save(this.frameEntityMapper.toEntity(frame));
-                log.info("Frame [{}] was successfully updated in DB", frameEntity.getId());
+                log.info("Frame  with id=[{}] was successfully updated in DB", frameEntity.getId());
                 this.entityManager.flush();
-                log.info("Updated frame entity: [[{}].", updatedFrame);
+                log.info("Updated frame entity: [{}].", updatedFrame);
                 this.entityManager.refresh(updatedFrame);
-                log.info("Updated frame entity after refresh: [[{}].", updatedFrame);
+                log.info("Updated frame entity after refresh: [{}].", updatedFrame);
                 return this.frameEntityMapper.toDomain(updatedFrame);
             })
             .orElseThrow(() -> {
-                final String message = String.format("There is no frame %s in DB", frameId);
+                final String message = String.format("There is no frame  with id=%s in DB", frameId);
                 log.info(message);
 
                 throw new FrameException(message);
@@ -116,12 +116,12 @@ public class FrameRepositoryImpl implements FrameRepository {
     @Override
     public void deleteById(final Long frameId) {
         try {
-            log.info("Starting deleting frame [{}] from DB", frameId);
+            log.info("Starting deleting frame  with id=[{}] from DB", frameId);
             this.frameEntityRepository.deleteById(frameId);
-            log.info("Frame [{}] was successfully deleted from DB", frameId);
+            log.info("Frame  with id=[{}] was successfully deleted from DB", frameId);
         } catch (Exception e) {
             log.warn(e.getMessage());
-            throw new FrameException(String.format("There is no frame with id %s exists in DB", frameId));
+            throw new FrameException(String.format("There is no frame with id=%s exists in DB", frameId));
         }
     }
 }
